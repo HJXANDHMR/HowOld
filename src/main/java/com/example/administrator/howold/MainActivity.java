@@ -53,8 +53,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Bitmap mbitmap;
     //拍照的bitmap
     private Bitmap takeBitmap;
-
     private Paint mpaint;
+    //图片存放的位置
+    String imgPath = "/sdcard/test/img.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,45 +111,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //                //获取相机返回的数据，并转换成bitmap格式
 //                takeBitmap = (Bitmap) bundle.get("data");
 //                imageView.setImageBitmap(takeBitmap);
-                String sdStatus = Environment.getExternalStorageState();
-                // 检测sd是否可用
-                if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
-                    Log.i("TestFile",
-                            "SD card is not avaiable/writeable right now.");
-                    return;
+
+                if (resultCode == RESULT_OK) {
+//                    imageView.setImageURI(Uri.fromFile(new File(imgPath)));
+                    currentPhotoStr = imgPath;
+                    resizePhoto();
+
+                    imageView.setImageBitmap(mbitmap);
                 }
-                new DateFormat();
-                String name = DateFormat.format("yyyyMMdd_hhmmss",
-                        Calendar.getInstance(Locale.CHINA))
-                        + ".jpg";
-                Bundle bundle = intent.getExtras();
-                // 获取相机返回的数据，并转换为Bitmap图片格式
-                takeBitmap = (Bitmap) bundle.get("data");
-                FileOutputStream b = null;
-                File file = new File("/sdcard/Image/");
-                // 创建文件夹
-                file.mkdirs();
-                String fileName = "/sdcard/Image/" + name;
 
-
-                try {
-                    b = new FileOutputStream(fileName);
-                    // 把数据写入文件
-                    takeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);
-                    imageView.setImageBitmap(takeBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        b.flush();
-                        b.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
             }
+
             break;
         }
         super.onActivityResult(requestCode, resultCode, intent);
@@ -325,7 +298,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.bt_takePhoto: {
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent, TAKE_PHONE_CODE);
+                //必须确保文件夹路径存在，否则拍照后无法完成回调
+                File vFile = new File(imgPath);
+                if (!vFile.exists()) {
+                    File vDirPath = vFile.getParentFile(); //new File(vFile.getParent());
+                    vDirPath.mkdirs();
+                }
+                Uri uri = Uri.fromFile(vFile);
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(intent, TAKE_PHONE_CODE);
                 break;
             }
