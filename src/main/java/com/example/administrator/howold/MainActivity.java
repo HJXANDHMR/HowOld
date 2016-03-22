@@ -136,7 +136,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         double ratio = Math.max(options.outWidth * 1.0d / 1024f, options.outHeight * 1.0d / 1024f);
 
         options.inSampleSize = (int) Math.ceil(ratio);
-
         options.inJustDecodeBounds = false;
         mbitmap = BitmapFactory.decodeFile(currentPhotoStr, options);
     }
