@@ -34,7 +34,6 @@ public class FaceDetect {
             public void run() {
 
                 try {
-
                     HttpRequests httpRequests = new HttpRequests(Constant.KEY, Constant.SECRET, true, true);
 
                     Bitmap bmsmall = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
@@ -51,7 +50,6 @@ public class FaceDetect {
                     if (callBack != null) {
                         callBack.success(jsonObject);
                     }
-
                 } catch (FaceppParseException e) {
                     e.printStackTrace();
                     if (callBack != null) {
