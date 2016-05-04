@@ -14,8 +14,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 /**
- * Created by Administrator on 2016/3/8.
- */
+*人脸检测
+*/
 public class FaceDetect {
 
     public interface CallBack {
@@ -32,7 +32,6 @@ public class FaceDetect {
 
             @Override
             public void run() {
-
                 try {
                     HttpRequests httpRequests = new HttpRequests(Constant.KEY, Constant.SECRET, true, true);
 
